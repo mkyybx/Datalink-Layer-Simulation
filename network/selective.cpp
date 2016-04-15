@@ -4,12 +4,27 @@
 #include <stdlib.h>
 #define MAX_PACKET_SIZE 256
 
+//what if crc doesn't found error? should we do sth?
+
 struct buffer {
 	unsigned int timer;
 	unsigned char data[MAX_PACKET_SIZE + 7];
 	bool ackArrived;
 	int length;
 };
+
+void mySendFrame(unsigned char* databuff, int size) {//add crc and cooperate with physical layer. databuff should be ready to send. size shoule be without crc
+	//append crc
+	unsigned char *p = databuff + size;
+	*(unsigned int*)p = crc32(databuff, size);
+	size += 4;//add length
+
+	while (phl_sq_len() >= 62000) //physical layer is not ready
+		_sleep(10);
+	send_frame(databuff, size);
+}
+
+bool 
 
 void main(int argc, char** argv) {
 	//init
@@ -38,6 +53,8 @@ void main(int argc, char** argv) {
 	//init event args
 	int eventArgs = -1;
 	int eventKind = -1;
+	//has nak sent
+	bool isNakSend = false;
 	//main loop
 	while (true) {
 		eventKind = wait_for_event(&eventArgs);//get event
@@ -50,7 +67,7 @@ void main(int argc, char** argv) {
 				isNetworkEnabled = false;
 			}
 			//store frame in buffer
-			sender[senderRight].length = get_packet(sender[senderRight].data);
+			sender[senderRight % bufferSize].length = get_packet(sender[senderRight % bufferSize].data);
 			break;
 		case FRAME_RECEIVED:
 			//init temp vars
@@ -61,7 +78,14 @@ void main(int argc, char** argv) {
 			else {
 				//check crc
 				if (!crc32(temp, frameLength + 4)) {//crc faild
+					//send nak
+					temp[0] = FRAME_NAK;//if the 2nd byte is error, it may sends false nak, but it doesn't matter
+					mySendFrame(temp, 2);
+				}
+				else {
+					if (temp[0] == FRAME_ACK) {//if it's an ack frame
 
+					}
 				}
 			}
 		}

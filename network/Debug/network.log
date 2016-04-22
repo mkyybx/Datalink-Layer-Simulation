@@ -1,14 +1,13 @@
-﻿生成启动时间为 4/14/2016 8:06:06 PM。
+﻿生成启动时间为 4/22/2016 7:50:49 PM。
      1>项目“C:\Users\mky\documents\visual studio 2013\Projects\network\network\network.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt selective.cpp
          selective.cpp
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\mky\documents\visual studio 2013\Projects\network\Debug\network.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\mky\documents\visual studio 2013\Projects\network\Debug\network.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\mky\documents\visual studio 2013\Projects\network\Debug\network.lib" /MACHINE:X86 Debug\selective.obj
-         Protocol.lib
-         network.vcxproj -> C:\Users\mky\documents\visual studio 2013\Projects\network\Debug\network.exe
-     1>已完成生成项目“C:\Users\mky\documents\visual studio 2013\Projects\network\network\network.vcxproj”(Build 个目标)的操作。
+     1>c:\users\mky\documents\visual studio 2013\projects\network\network\selective.cpp(33): warning C4996: '_sleep': This function or variable has been superceded by newer library or operating system functionality. Consider using Sleep instead. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(911) : 参见“_sleep”的声明
+     1>c:\users\mky\documents\visual studio 2013\projects\network\network\selective.cpp(39): error C4716: “isInBuffer”: 必须返回一个值
+     1>已完成生成项目“C:\Users\mky\documents\visual studio 2013\Projects\network\network\network.vcxproj”(Build 个目标)的操作 - 失败。
 
-生成成功。
+生成失败。
 
-已用时间 00:00:01.09
+已用时间 00:00:01.44

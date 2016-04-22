@@ -1,0 +1,8 @@
+C:\Users\mky\documents\visual studio 2013\Projects\network\Debug\network.exe a 3 
+=========================================================================
+                          Station A                                 
+-------------------------------------------------------------------------
+Protocol.lib, version 3.0, Build: Oct 19 2009 (jiangy@public3.bta.net.cn)
+Channel: 8000 bps, 270 ms propagation delay, bit error rate 1.0E-005
+Log file "C:\Users\mky\documents\visual studio 2013\Projects\network\Debug\network-A.log", TCP port 59144, debug mask 0x00
+Station A is waiting for station B on TCP port 59144 ... 

@@ -6,6 +6,16 @@
 
 //what if crc doesn't found error? should we do sth?
 
+//arguments
+unsigned short windowSize;//from 0 to n-1
+unsigned int acktimer;//for debuging, it should be large enough
+int bufferSize;//buffer size
+//init datalink layer
+unsigned short senderLeft;//left edge of sender
+unsigned short senderRight;//right edge of sender, which has data unfilled
+unsigned short recieverLeft;//left edge of receiver
+//unsigned short recieverRight = bufferSize - 1;//right edge of receiver
+
 struct buffer {
 	unsigned int timer;
 	unsigned char data[MAX_PACKET_SIZE + 7];
@@ -24,20 +34,22 @@ void mySendFrame(unsigned char* databuff, int size) {//add crc and cooperate wit
 	send_frame(databuff, size);
 }
 
-bool 
+bool isInBuffer(short seq) {//whether a serial number is in buffer range
+
+}
 
 void main(int argc, char** argv) {
 	//init
 	protocol_init(argc, argv);
 	//arguments
-	unsigned short windowSize = 8;//from 0 to n-1
-	unsigned int acktimer = 800;//for debuging, it should be large enough
-	const int bufferSize = windowSize / 2;//buffer size
+	windowSize = 8;//from 0 to n-1
+	acktimer = 800;//for debuging, it should be large enough
+	bufferSize = windowSize / 2;//buffer size
 	//init datalink layer
-	unsigned short senderLeft = 0;//left edge of sender
-	unsigned short senderRight = 0;//right edge of sender, which has data unfilled
-	unsigned short recieverLeft = 0;//left edge of receiver
-	//unsigned short recieverRight = bufferSize - 1;//right edge of receiver
+	senderLeft = 0;//left edge of sender
+	senderRight = 0;//right edge of sender, which has data unfilled
+	recieverLeft = 0;//left edge of receiver
+	//recieverRight = bufferSize - 1;//right edge of receiver
 	//init buffer
 	buffer* sender = (buffer*)malloc(sizeof(buffer)* bufferSize);
 	buffer* receiver = (buffer*)malloc(sizeof(buffer)* bufferSize);

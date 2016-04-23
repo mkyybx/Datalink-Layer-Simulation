@@ -2,26 +2,30 @@
 #include "protocol.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define MAX_PACKET_SIZE 256
 
 //what if crc doesn't found error? should we do sth?
 
+struct buffer {
+	unsigned char data[MAX_PACKET_SIZE + 7];
+	bool ackArrived;//for receiver, it means if a frame has arrived
+	int length;
+};
+
 //arguments
 unsigned short windowSize;//from 0 to n-1
-unsigned int acktimer;//for debuging, it should be large enough
+unsigned int retimer;//for debuging, it should be large enough
+unsigned int acktimer;//acktimer
 int bufferSize;//buffer size
 //init datalink layer
 unsigned short senderLeft;//left edge of sender
 unsigned short senderRight;//right edge of sender, which has data unfilled
-unsigned short recieverLeft;//left edge of receiver
-//unsigned short recieverRight = bufferSize - 1;//right edge of receiver
-
-struct buffer {
-	unsigned int timer;
-	unsigned char data[MAX_PACKET_SIZE + 7];
-	bool ackArrived;
-	int length;
-};
+unsigned short receiverLeft;//left edge of receiver
+//unsigned short receiverRight = bufferSize - 1;//right edge of receiver
+//init buffer
+buffer* sender;
+buffer* receiver;
 
 void mySendFrame(unsigned char* databuff, int size) {//add crc and cooperate with physical layer. databuff should be ready to send. size shoule be without crc
 	//append crc
@@ -29,13 +33,34 @@ void mySendFrame(unsigned char* databuff, int size) {//add crc and cooperate wit
 	*(unsigned int*)p = crc32(databuff, size);
 	size += 4;//add length
 
+	if (databuff[0] == FRAME_DATA) {
+		//add timer
+		start_timer(databuff[1] % bufferSize, retimer);
+		//piggyback ack
+		short i = (receiverLeft - 1) % windowSize;//log the last ack arrived
+		for (short j = receiverLeft, k = 0; k < bufferSize; k++) {
+			receiver[j % bufferSize].ackArrived ? i = j % windowSize : 0;
+			j++;
+		}
+		databuff[2] = i;
+	}
+
 	while (phl_sq_len() >= 62000) //physical layer is not ready
 		_sleep(10);
 	send_frame(databuff, size);
+
+	//piggyback ack timer
+	if (databuff[0] == FRAME_DATA) {//restart timer
+		stop_ack_timer();
+		start_ack_timer(acktimer);
+	}
+
 }
 
-bool isInBuffer(short seq) {//whether a serial number is in buffer range
-
+bool isInBuffer(short left, short right, short seq) {//whether a serial number is in buffer range,[left, right)
+	if (right > left)
+		return (seq >= left && seq < right);
+	else return seq < right || seq >= left;
 }
 
 void main(int argc, char** argv) {
@@ -43,20 +68,19 @@ void main(int argc, char** argv) {
 	protocol_init(argc, argv);
 	//arguments
 	windowSize = 8;//from 0 to n-1
-	acktimer = 800;//for debuging, it should be large enough
+	retimer = 800;//for debuging, it should be large enough
+	acktimer = 100;
 	bufferSize = windowSize / 2;//buffer size
 	//init datalink layer
 	senderLeft = 0;//left edge of sender
 	senderRight = 0;//right edge of sender, which has data unfilled
-	recieverLeft = 0;//left edge of receiver
-	//recieverRight = bufferSize - 1;//right edge of receiver
+	receiverLeft = 0;//left edge of receiver
+	//receiverRight = bufferSize - 1;//right edge of receiver
 	//init buffer
-	buffer* sender = (buffer*)malloc(sizeof(buffer)* bufferSize);
-	buffer* receiver = (buffer*)malloc(sizeof(buffer)* bufferSize);
+	sender = (buffer*)malloc(sizeof(buffer)* bufferSize);
+	receiver = (buffer*)malloc(sizeof(buffer)* bufferSize);
 	for (int i = 0; i < bufferSize; i++) {
-		sender[i].timer = -1;
 		sender[i].ackArrived = false;
-		receiver[i].timer = -1;
 		receiver[i].ackArrived = false;
 	}
 	//init interfcace
@@ -74,7 +98,7 @@ void main(int argc, char** argv) {
 		switch (eventKind) {
 		case NETWORK_LAYER_READY:
 			//if buffer nearly full
-			if (senderRight - senderLeft == bufferSize - 1) {
+			if (((senderRight > senderLeft) && (senderRight - senderLeft == bufferSize - 1)) || (senderRight < senderLeft) && (windowSize - senderLeft + senderRight == bufferSize - 1)) {
 				disable_network_layer();
 				isNetworkEnabled = false;
 			}
@@ -95,10 +119,29 @@ void main(int argc, char** argv) {
 					mySendFrame(temp, 2);
 				}
 				else {
-					if (temp[0] == FRAME_ACK) {//if it's an ack frame
-
+					if (isInBuffer(senderLeft, senderRight, temp[1])) {//sequence is in buffer
+						if (temp[0] == FRAME_ACK) {//if it's an ack frame
+							sender[temp[1] % bufferSize].ackArrived = true;
+							stop_timer(temp[1] % bufferSize);//stop timmer
+							//else do noting
+						}
+						else if (temp[0] == FRAME_NAK) {//if it's a nak frame
+							//retranmit
+							temp[0] = 1;
+							memcpy(temp + 3, sender[temp[1]].data, sender[temp[1]].length * sizeof(unsigned char));
+							mySendFrame(temp, sender[temp[1]].length + 3);
+						}
 					}
+					else if (isInBuffer(receiverLeft, (receiverLeft + bufferSize - 1) % windowSize, temp[1])){
+						if (temp[0] == FRAME_DATA) {//if it's a data frame
+							receiver[temp[1]].ackArrived = 1;
+							memcpy(receiver[temp[1]].data, (void*)(temp[3]), (frameLength - 7) * sizeof(unsigned char));
+							receiver[temp[1]].length = frameLength - 7;
+						}
+					}
+
 				}
+
 			}
 		}
 

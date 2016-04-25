@@ -1,0 +1,19 @@
+C:\Users\Ice\documents\visual studio 2013\Projects\network\Release\network.exe bu 
+=========================================================================
+                          Station B                                 
+-------------------------------------------------------------------------
+Protocol.lib, version 3.0, Build: Oct 19 2009 (jiangy@public3.bta.net.cn)
+Channel: 8000 bps, 270 ms propagation delay, bit error rate 0
+Log file "C:\Users\Ice\documents\visual studio 2013\Projects\network\Release\network-B.log", TCP port 59144, debug mask 0x00
+Station B is connecting station A (TCP port 59144) ... Done.
+New epoch: Sun Apr 24 20:30:07 2016
+=========================================================================
+2.602 .... 4 packets received, 3848 bps, 48.10%, Err 0 (0.0e+000)
+4.692 .... 8 packets received, 3883 bps, 48.54%, Err 0 (0.0e+000)
+6.810 .... 12 packets received, 3878 bps, 48.48%, Err 0 (0.0e+000)
+8.920 .... 16 packets received, 3879 bps, 48.49%, Err 0 (0.0e+000)
+11.028 .... 20 packets received, 3881 bps, 48.51%, Err 0 (0.0e+000)
+13.137 .... 24 packets received, 3881 bps, 48.52%, Err 0 (0.0e+000)
+
+14.189 FATAL: Network Layer received a bad packet from data link layer
+Abort.

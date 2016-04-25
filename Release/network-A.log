@@ -1,0 +1,17 @@
+C:\Users\Ice\documents\visual studio 2013\Projects\network\Release\network.exe au 
+=========================================================================
+                          Station A                                 
+-------------------------------------------------------------------------
+Protocol.lib, version 3.0, Build: Oct 19 2009 (jiangy@public3.bta.net.cn)
+Channel: 8000 bps, 270 ms propagation delay, bit error rate 0
+Log file "C:\Users\Ice\documents\visual studio 2013\Projects\network\Release\network-A.log", TCP port 59144, debug mask 0x00
+Station A is waiting for station B on TCP port 59144 ... Done.
+New epoch: Sun Apr 24 20:30:07 2016
+=========================================================================
+3.418 .... 4 packets received, 3870 bps, 48.37%, Err 0 (0.0e+000)
+5.551 .... 8 packets received, 3855 bps, 48.19%, Err 0 (0.0e+000)
+7.640 .... 12 packets received, 3877 bps, 48.46%, Err 0 (0.0e+000)
+9.751 .... 16 packets received, 3878 bps, 48.47%, Err 0 (0.0e+000)
+11.871 .... 20 packets received, 3875 bps, 48.44%, Err 0 (0.0e+000)
+13.968 .... 24 packets received, 3880 bps, 48.50%, Err 0 (0.0e+000)
+14.205 TCP Disconnected.

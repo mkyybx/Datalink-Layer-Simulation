@@ -1,9 +1,12 @@
-﻿生成启动时间为 4/27/2016 22:17:08。
+﻿生成启动时间为 5/13/2016 16:15:58。
      1>项目“C:\Users\Ice\documents\visual studio 2013\Projects\network\network\network.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt selective.cpp
          selective.cpp
-     1>selective.cpp(48): warning C4244: “=”: 从“short”转换到“unsigned char”，可能丢失数据
+     1>selective.cpp(58): warning C4244: “=”: 从“short”转换到“unsigned char”，可能丢失数据
+     1>selective.cpp(110): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+     1>selective.cpp(159): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
+     1>selective.cpp(321): warning C4244: “参数”: 从“double”转换到“unsigned int”，可能丢失数据
        Link:
          D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Ice\documents\visual studio 2013\Projects\network\Release\network.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Ice\documents\visual studio 2013\Projects\network\Release\network.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Ice\documents\visual studio 2013\Projects\network\Release\network.lib" /MACHINE:X86 /SAFESEH Release\selective.obj
          Protocol.lib
@@ -14,4 +17,4 @@
 
 生成成功。
 
-已用时间 00:00:01.18
+已用时间 00:00:02.63

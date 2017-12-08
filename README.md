@@ -4,7 +4,7 @@ A selective repeat protocol simulation
 The simulation program is designed to test the performance and the stability of the selective repeat protocol.
 
 ---
-You can change the parameters by changing the the following three varaibles in *selective.cpp*
+You can change the parameters by changing the following three variables in *selective.cpp*
 ```
 windowSize = 62;//slide window size
 retimer = 2500;//retransmit timer, in ms
